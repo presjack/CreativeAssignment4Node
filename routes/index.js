@@ -6,12 +6,12 @@ router.get('/', function(req, res, next) {
   res.sendFile('index.html', { root: 'public' });
 });
 
-var listList = {
+var listList = [
   {"store": "Wal-Mart", 
    "list": ["cups", "bowls", "pastry dishes"] },
   {"store": "Smith\'s",
    "list": ["bannanas", "onion"]}
-};
+];
 
 router.get('/getList', function(req, res, next) {
   res.status(200).json(listList);
