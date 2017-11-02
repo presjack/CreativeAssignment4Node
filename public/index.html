@@ -1,46 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- include our dependency on angular -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
-<script src="avatar.js"></script>
-  <meta charset="utf-8">
-  <title>User Avatar Template</title>
+  <!-- angular -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+
+<script>
+var app = angular.module('myApp', []); 
+app.controller('todoCtrl', function($scope) {
+    $scope.histList = [];
+
+    $scope.histListAdd = function() {
+        $scope.histList.push({});
+        $scope. = ""; //clear the bound field from below
+    };
+
+    $scope.remove = function() {
+        var oldList = $scope.histList;
+        $scope.histList = [];
+        angular.forEach(oldList, function(x) {
+            if (!x.done) $scope.histList.push(x);
+        });
+    };
+});
+</script>
+
+<meta charset="utf-8">
+<title>Shopping Lists</title>
+
 </head>
-<body>
-<h1>Page Goes Here</h1>
-  <!--
-    1. ng-app='app' tells angular that everything within this div should function within
-    the scope of a declared angular module with the name of app.
-    2. ng-controller='mainCtrl' tells angular that the scope of this div should be handled
-    by a controller by the name of 'mainCtrl'. In a bigger application you will likely have
-    multiple controllers within one ng-app
-  -->
-  <div ng-app='app' ng-controller='mainCtrl'> <!-- [1],[2] -->
-    <h1>Create new user</h1>
 
-    <!--
-     1. Giving a form a name in Angular is kind of like creationg a javascript object with that name:
-     e.g. var userForm = {}
-     2. This is the function with the given parameter we want it to be called with when the form is submitted
-     'addNew' should be found on the scope of mainCtrl.
-     3. .name & .url of userForm is like adding properties to our userForm object. Angular will automatically
-     bind values to these.
-     e.g. userForm = {
-      name: '',
-      url: ''
-     }
-    -->
-    <form name='userForm' ng-submit='addNew(userForm)'> <!-- [1], [2] -->
+<body class="container"  ng-app="myApp" ng-controller="todoCtrl">
 
-      <input placeholder='Name' ng-model='userForm.name'/> <!-- [3] -->
-      <input placeholder='Image Url' ng-model='userForm.url'/>
+  <h2>My Family History List</h2>
 
-      <!-- 
-      setting button to type submit will trigger the ng-submit of the 
-      form that button is a child of.
-      -->
-      <button type='submit'>Add New</button>
-    </form>
+  <form ng-submit="addStore()"> <!--this should add an entire list-->
+    <input type="text" ng-model="" size="20" placeholder="">
+    <input type="submit" value="Add Store">
+  </form>
+
+  <br>
+
+  <div class="list"> <!--I think this should be changed to repeat according to the number of stores in the object-->
+    <br>
+    <div class="listItem" ng-repeat="x in list"> <!--This already repeats the list items in the store-->
+      <input type="checkbox" ng-model="x.done"> <span ng-bind=""></span> <!--Bind must be set-->
+    </div>
+
+    <p><button ng-click="remove()">Remove marked</button></p>
   </div>
+
+</body>
 </html>
