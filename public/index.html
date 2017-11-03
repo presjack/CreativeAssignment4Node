@@ -9,10 +9,17 @@ var app = angular.module('myApp', []);
 app.controller('todoCtrl', function($scope) {
     $scope.histList = [];
 
+
     $scope.histListAdd = function() {
-        $scope.histList.push({});
-        $scope. = ""; //clear the bound field from below
-    };
+console.log($scope.histList);
+        $scope.histList.push({
+		name: $scope.storeName,
+		itemsToBuy: ["soda","carrots"
+		]
+	});
+        $scope.storeName = ""; //clear the bound field from below
+ console.log($scope.histList);  
+ };
 
     $scope.remove = function() {
         var oldList = $scope.histList;
@@ -33,8 +40,8 @@ app.controller('todoCtrl', function($scope) {
 
   <h2>My Family History List</h2>
 
-  <form ng-submit="addStore()"> <!--this should add an entire list-->
-    <input type="text" ng-model="" size="20" placeholder="">
+  <form ng-submit="histListAdd()"> <!--this should add an entire list-->
+    <input type="text" ng-model="storeName" size="20" placeholder="Store Name">
     <input type="submit" value="Add Store">
   </form>
 
@@ -42,9 +49,14 @@ app.controller('todoCtrl', function($scope) {
 
   <div class="list"> <!--I think this should be changed to repeat according to the number of stores in the object-->
     <br>
-    <div class="listItem" ng-repeat="x in list"> <!--This already repeats the list items in the store-->
+    <div class="listItem" ng-repeat="x in histList"> <!--This already repeats the list items in the store-->
       <input type="checkbox" ng-model="x.done"> <span ng-bind=""></span> <!--Bind must be set-->
-    </div>
+	{{x.name}}    
+	<div class="items-to-buy" ng-repeat="item in x.itemsToBuy">
+	{{item}}
+	</div>      
+
+</div>
 
     <p><button ng-click="remove()">Remove marked</button></p>
   </div>
