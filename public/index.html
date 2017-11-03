@@ -1,25 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<style>
+body {
+    margin: 20px 50px 20px 50px;
+    max-width: 120em;
+    max-width: 1200px;
+}
+
+</style>
   <!-- angular -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
 
 <script>
 var app = angular.module('myApp', []); 
-app.controller('todoCtrl', function($scope) {
+app.controller('todoCtrl', function($scope,$http) {
     $scope.histList = [];
 
+ $scope.testitems = [];
 
+ $http.get('/getList').then(successCallback, errorCallback);
+
+ function successCallback(response){
+ 	//success code
+	$scope.histList = response.data;
+	console.log(response); 
+}
+ function errorCallback(error){
+    //error code
+   console.log(response);
+ }
+
+//	itemsToBuy: ["soda","carrots"
+//		]
+function sendToSave(){
+	toSend = angular.toJson($scope.histList);
+	$http.get('/saveList?obj='+toSend).then(null,null);
+}
     $scope.histListAdd = function() {
-console.log($scope.histList);
+	if($scope.storeName == "" || $scope.itemsToAdd == ""){
+		return;
+	}
+    console.log($scope.histList);
         $scope.histList.push({
 		name: $scope.storeName,
-		itemsToBuy: ["soda","carrots"
-		]
-	});
+		itemsToBuy: $scope.itemsToAdd.split(',')
+		});
+	sendToSave();
+
         $scope.storeName = ""; //clear the bound field from below
- console.log($scope.histList);  
- };
+	$scope.itemsToAdd = ""; 
+};
 
     $scope.remove = function() {
         var oldList = $scope.histList;
@@ -27,6 +59,7 @@ console.log($scope.histList);
         angular.forEach(oldList, function(x) {
             if (!x.done) $scope.histList.push(x);
         });
+	sendToSave();
     };
 });
 </script>
@@ -38,10 +71,11 @@ console.log($scope.histList);
 
 <body class="container"  ng-app="myApp" ng-controller="todoCtrl">
 
-  <h2>My Family History List</h2>
+  <h2>My Shopping List</h2>
 
   <form ng-submit="histListAdd()"> <!--this should add an entire list-->
     <input type="text" ng-model="storeName" size="20" placeholder="Store Name">
+    <input type="text" ng-model="itemsToAdd" size="100" placeholder="List items to buy at that store, separated by a comma">
     <input type="submit" value="Add Store">
   </form>
 
@@ -52,9 +86,9 @@ console.log($scope.histList);
     <div class="listItem" ng-repeat="x in histList"> <!--This already repeats the list items in the store-->
       <input type="checkbox" ng-model="x.done"> <span ng-bind=""></span> <!--Bind must be set-->
 	{{x.name}}    
-	<div class="items-to-buy" ng-repeat="item in x.itemsToBuy">
-	{{item}}
-	</div>      
+	<ul class="items-to-buy" ng-repeat="item in x.itemsToBuy">
+	<li>{{item}}</li>
+	</ul>      
 
 </div>
 

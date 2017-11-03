@@ -7,10 +7,10 @@ router.get('/', function(req, res, next) {
 });
 
 var listList = [
-  {"store": "Wal-Mart", 
-   "list": ["cups", "bowls", "pastry dishes"] },
-  {"store": "Smith\'s",
-   "list": ["bannanas", "onion"]}
+  {"name": "Wal-Mart", 
+   "itemsToBuy": ["cups", "bowls", "pastry dishes"] },
+  {"name": "Smith\'s",
+   "itemsToBuy": ["bannanas", "onion"]}
 ];
 
 router.get('/getList', function(req, res, next) {
